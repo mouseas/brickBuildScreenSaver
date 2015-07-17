@@ -22,4 +22,6 @@ You can:
 	- When it's working correctly, send a pull request.
 	- (Please limit pull requests to one change/fix each. If you have multiple unrelated changes, send a separate
 		pull request for each one.)
-- Add new features (including implementing basic functionality I haven't gotten to yet) - same procedure as fixing bugs, above.
+- Add new features (including implementing basic functionality I haven't gotten to yet) or improve existing
+	features - same procedure as fixing bugs, above.
+- Create structure files for the screensaver to use. (not yet implemented)
