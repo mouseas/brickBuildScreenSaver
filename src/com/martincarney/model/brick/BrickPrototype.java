@@ -1,4 +1,4 @@
-package com.martincarney.model;
+package com.martincarney.model.brick;
 
 /**
  * A brick which represents a reusable prototype for individual brick instances,

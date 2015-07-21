@@ -1,4 +1,4 @@
-package com.martincarney.model;
+package com.martincarney.model.brick;
 
 /**
  * Represents an instance of a Brick, which has a changeable (x, y, z) world position

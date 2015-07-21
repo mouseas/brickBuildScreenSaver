@@ -1,6 +1,8 @@
-package com.martincarney.model;
+package com.martincarney.model.brick;
 
 import java.awt.Color;
+
+import com.martincarney.model.shared.Dimension;
 
 /**
  * Simplest implementation of a Brick, this represents a simple rectangular brick. It acts as
@@ -10,59 +12,50 @@ import java.awt.Color;
  */
 public class RectangleBrick implements BrickPrototype, BrickInstance {
 	
-	private Dimensions dimensions;
+	private Dimension dimensions;
 	private Color baseColor;
 	
 	private int x;
 	private int y;
 	private int z;
 	
-	public RectangleBrick(Dimensions dimensions, Color baseColor) {
+	public RectangleBrick(Dimension dimensions, Color baseColor) {
 		this.dimensions = dimensions;
 		this.baseColor = baseColor;
 	}
 	
-	@Override
-	public Dimensions getDimensions() {
+	public Dimension getDimensions() {
 		return dimensions;
 	}
 
-	@Override
 	public Color getBaseColor() {
 		return baseColor;
 	}
 	
-	@Override
 	public BrickInstance createInstance() {
 		return new RectangleBrick(this.dimensions, this.baseColor);
 	}
 
-	@Override
 	public int getX() {
 		return x;
 	}
 
-	@Override
 	public int getY() {
 		return y;
 	}
 
-	@Override
 	public int getZ() {
 		return z;
 	}
 
-	@Override
 	public void setX(int newX) {
 		x = newX;
 	}
 
-	@Override
 	public void setY(int newY) {
 		y = newY;
 	}
 
-	@Override
 	public void setZ(int newZ) {
 		z = newZ;
 	}
