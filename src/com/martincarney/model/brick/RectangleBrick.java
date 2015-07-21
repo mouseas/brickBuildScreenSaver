@@ -8,7 +8,6 @@ import com.martincarney.model.shared.Dimension;
  * Simplest implementation of a Brick, this represents a simple rectangular brick. It acts as
  * both a prototype and an instance.
  * @author Martin Carney 2015
- *
  */
 public class RectangleBrick implements BrickPrototype, BrickInstance {
 	

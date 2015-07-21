@@ -8,7 +8,6 @@ import com.martincarney.model.shared.Dimension;
  * Represents a building brick. This interface should not be used directly in an implementation;
  * use {@link BrickInstance} or {@link BrickPrototype} (or both) instead.
  * @author Martin Carney 2015
- *
  */
 public interface Brick {
 	

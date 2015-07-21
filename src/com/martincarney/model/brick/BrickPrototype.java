@@ -3,7 +3,7 @@ package com.martincarney.model.brick;
 /**
  * A brick which represents a reusable prototype for individual brick instances,
  * and can generate such instances.
- * @author Martin
+ * @author Martin Carney 2015
  *
  */
 public interface BrickPrototype extends Brick {
