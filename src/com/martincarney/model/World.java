@@ -33,7 +33,7 @@ public class World {
 			// process falling brick, if any
 			boolean brickLanded = false;
 			if (currentlyFallingBrick != null) {
-				// TODO
+				// TODO implement brick falling physics
 			}
 			
 			// if landed, notify notifyees (who should, in turn, give the world its next brick)
