@@ -53,9 +53,9 @@ public class AppPanel extends JPanel {
 		int yOffset = (this.getHeight() / 2) + ((world.getDimension().z * SCREEN_Z_JOG) / 2);
 		
 		// render each brick, in order based on its lowest, left-most, most-distant (rather than nearest) corner
-		for (int i = 0; i < world.getBrickGrid()[0][0].length; i++) {
-			for (int j = world.getBrickGrid()[0].length - 1; j >= 0; j--) {
-				for (int k = 0; k < world.getBrickGrid().length; k++) {
+		for (int i = 0; i < world.getDimension().z; i++) {
+			for (int j = world.getDimension().y - 1; j >= 0; j--) {
+				for (int k = 0; k < world.getDimension().x; k++) {
 					BrickInstance brick = world.getBrickGrid()[k][j][i];
 					if (brick != null && !brick.hasRendered()) {
 						try {
