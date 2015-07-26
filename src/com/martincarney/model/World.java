@@ -50,6 +50,44 @@ public class World {
 			
 		}
 	}
+	
+	/**
+	 * Clears and re-builds the {@code brickGrid} to accurately reflect the bricks in {@code activeBricks}.
+	 */
+	public void refreshBrickGrid() {
+		// first mark every grid cell as empty.
+		for (int i = 0; i < brickGrid.length; i++) {
+			for (int j = 0; j < brickGrid[i].length; j++) {
+				for (int k = 0; k < brickGrid[i][j].length; k++) {
+					brickGrid[i][j][k] = null;
+				}
+			}
+		}
+		
+		// then iterate over each brick in the world and place it in each grid space it occupies.
+		for (BrickInstance brick : activeBricks) {
+			Dimension brickSize = brick.getDimensions();
+			for (int i = 0; i < brickSize.x; i++) {
+				for (int j = 0; j < brickSize.y; j++) {
+					for (int k = 0; k < brickSize.z; k++) {
+						safeSetGridValue(i + brick.getX(), j + brick.getY(), k + brick.getZ(), brick);
+					}
+				}
+			}
+		}
+	}
+	
+	/** Checks that the specified coordinate is valid, then sets the brick for that coordinate. */
+	private void safeSetGridValue(int x, int y, int z, BrickInstance brick) {
+		if (x < 0 || x >= brickGrid.length || y < 0 || y >= brickGrid[x].length || z < 0
+				|| z >= brickGrid[x][y].length) {
+			// TODO add a warning that part of a brick is out of the world boundaries.
+			return;
+		}
+		// TODO add a check and a warning if that grid location is already occupied, as that means two bricks
+		// are occupying the same space.
+		brickGrid[x][y][z] = brick;
+	}
 
 	public void setNextBrick(BrickInstance nextFallingBrick) {
 		if (currentlyFallingBrick != null) {

@@ -46,6 +46,7 @@ public class AppFrame extends JFrame {
 				public void mouseMoved(MouseEvent e) {
 					super.mouseMoved(e);
 					dispose();
+					System.exit(0);
 				}
 			};
 			addMouseMotionListener(mouseMovedListener);
@@ -57,6 +58,7 @@ public class AppFrame extends JFrame {
 				public void keyPressed(KeyEvent e) {
 					super.keyPressed(e);
 					dispose();
+					System.exit(0);
 				}
 			};
 			addKeyListener(keyPressedListener);

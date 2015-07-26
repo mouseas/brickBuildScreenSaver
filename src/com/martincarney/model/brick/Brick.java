@@ -3,6 +3,7 @@ package com.martincarney.model.brick;
 import java.awt.Color;
 
 import com.martincarney.model.shared.Dimension;
+import com.martincarney.view.renderer.BrickRenderer;
 
 /**
  * Represents a building brick. This interface should not be used directly in an implementation;
@@ -22,5 +23,12 @@ public interface Brick {
 	 * @return
 	 */
 	public Color getBaseColor();
+	
+	/**
+	 * Get the type of Renderer that this brick type can use.
+	 * @return {@code Class} that implements {@code BrickRenderer} which can correctly render this type
+	 * of brick. Every brick of one type should always return the same BrickRenderer class.
+	 */
+	public Class<? extends BrickRenderer> getRendererClass();
 	
 }
