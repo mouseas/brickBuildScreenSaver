@@ -3,6 +3,9 @@ package com.martincarney.view.renderer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import com.martincarney.model.brick.BrickInstance;
 import com.martincarney.model.brick.RectangleBrick;
@@ -27,15 +30,20 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		int startY = yOffset - (currentBrick.getZ() * SCREEN_Z_JOG) + (currentBrick.getX() * SCREEN_Y_JOG)
 				- (currentBrick.getY() * SCREEN_Y_JOG);
 		
-		Color midColor = currentBrick.getBaseColor();
-		Color lightColor = getLighterColor(midColor);
-		Color darkColor = getDarkerColor(midColor);
+		drawXFace(startX, startY, g);
+		drawYFace(startX, startY, g);
+		drawZFace(startX, startY, g);
+		drawStuds(startX, startY, g);
 		
-		int x = startX;
-		int y = startY;
+		currentBrick.setRendered(true);
+	}
+	
+	private void drawXFace(int startX, int startY, Graphics2D g) {
 		Dimension brickSize = currentBrick.getDimensions();
 		
 		Polygon xFace = new Polygon();
+		int x = startX;
+		int y = startY;
 		xFace.addPoint(x, y);
 		y -= SCREEN_Z_JOG * brickSize.z;
 		xFace.addPoint(x, y);
@@ -46,9 +54,16 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		xFace.addPoint(x, y);
 		xFace.addPoint(startX, startY);
 		
+		g.setColor(currentBrick.getBaseColor());
+		g.fill(xFace);
+	}
+	
+	private void drawYFace(int startX, int startY, Graphics2D g) {
+		Dimension brickSize = currentBrick.getDimensions();
+		
 		Polygon yFace = new Polygon();
-		x = startX + (SCREEN_X_JOG * brickSize.x);
-		y = startY + (SCREEN_Y_JOG * brickSize.x);
+		int x = startX + (SCREEN_X_JOG * brickSize.x);
+		int y = startY + (SCREEN_Y_JOG * brickSize.x);
 		yFace.addPoint(x, y);
 		y -= SCREEN_Z_JOG * brickSize.z;
 		yFace.addPoint(x, y);
@@ -59,9 +74,16 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		yFace.addPoint(x, y);
 		yFace.addPoint(startX + (SCREEN_X_JOG * brickSize.x), startY + (SCREEN_Y_JOG * brickSize.x));
 		
+		g.setColor(getDarkerColor(currentBrick.getBaseColor()));
+		g.fill(yFace);
+	}
+	
+	private void drawZFace(int startX, int startY, Graphics2D g) {
+		Dimension brickSize = currentBrick.getDimensions();
+		
 		Polygon zFace = new Polygon();
-		x = startX;
-		y = startY - (SCREEN_Z_JOG * brickSize.z);
+		int x = startX;
+		int y = startY - (SCREEN_Z_JOG * brickSize.z);
 		zFace.addPoint(x, y);
 		x += SCREEN_X_JOG * brickSize.x;
 		y += SCREEN_Y_JOG * brickSize.x;
@@ -74,14 +96,30 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		zFace.addPoint(x, y);
 		zFace.addPoint(startX, startY - (SCREEN_Z_JOG * brickSize.z));
 		
-		g.setColor(midColor);
-		g.fill(xFace);
-		g.setColor(darkColor);
-		g.fill(yFace);
-		g.setColor(lightColor);
+		g.setColor(getLighterColor(currentBrick.getBaseColor()));
 		g.fill(zFace);
-		
-		currentBrick.setRendered(true);
+	}
+	
+	private void drawStuds(int startX, int startY, Graphics2D g) {
+		for (int i = 0; i < currentBrick.getDimensions().x; i++) {
+			for (int j = 0; j < currentBrick.getDimensions().y; j++) {
+				int x = startX + SCREEN_STUD_X_OFFSET + (i * SCREEN_X_JOG) + (j * SCREEN_X_JOG);
+				int y = startY - SCREEN_STUD_Y_OFFSET + (i * SCREEN_Y_JOG) - (j * SCREEN_Y_JOG)
+						- (currentBrick.getDimensions().z * SCREEN_Z_JOG);
+				Ellipse2D studBottom = new Ellipse2D.Float(x, y, SCREEN_STUD_WIDTH, SCREEN_STUD_TOP_HEIGHT);
+				g.setColor(currentBrick.getBaseColor());
+				g.fill(studBottom);
+				
+				Rectangle filling = new Rectangle(x, y + SCREEN_STUD_Y_OFFSET - SCREEN_STUD_Z_HEIGHT,
+						SCREEN_STUD_WIDTH, SCREEN_STUD_Z_HEIGHT);
+				g.fill(filling);
+				
+				y -= SCREEN_STUD_Z_HEIGHT;
+				Ellipse2D studTop = new Ellipse2D.Float(x, y, SCREEN_STUD_WIDTH, SCREEN_STUD_TOP_HEIGHT);
+				g.setColor(getLighterColor(currentBrick.getBaseColor()));
+				g.fill(studTop);
+			}
+		}
 	}
 
 	private Color getLighterColor(Color midColor) {

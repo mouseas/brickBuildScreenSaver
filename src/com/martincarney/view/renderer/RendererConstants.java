@@ -21,6 +21,16 @@ public abstract class RendererConstants {
 	 */
 	public static final int SCREEN_Z_JOG = 5;
 	
+	public static final int SCREEN_STUD_WIDTH = 10;
+	
+	public static final int SCREEN_STUD_TOP_HEIGHT = 5;
+	
+	public static final int SCREEN_STUD_Z_HEIGHT = 3;
+	
+	public static final int SCREEN_STUD_X_OFFSET = ((SCREEN_X_JOG * 2) - SCREEN_STUD_WIDTH) / 2;
+	
+	public static final int SCREEN_STUD_Y_OFFSET = ((SCREEN_Y_JOG * 2) - SCREEN_STUD_TOP_HEIGHT) / 2;
+	
 	/**
 	 * A set of standard colors approximately matching same name-brand plastic building blocks' colors.
 	 * These can be referenced for procedurally-drawn bricks.
@@ -30,7 +40,7 @@ public abstract class RendererConstants {
 		Color.decode("#007700"),
 		Color.decode("#0000BB"),
 		Color.decode("#DDDDDD"),
-		Color.decode("#AAAAAA"),
+		Color.decode("#999999"),
 		Color.decode("#666666"),
 		Color.decode("#333333"),
 		Color.decode("#733E29"),
