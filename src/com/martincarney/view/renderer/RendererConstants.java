@@ -39,4 +39,24 @@ public abstract class RendererConstants {
 		Color.decode("#E67300"),
 		Color.decode("#00AA00")
 	};
+
+	public static final int C_RED = 0;
+	public static final int C_GREEN = 1;
+	public static final int C_BLUE = 2;
+	public static final int C_WHITE = 3;
+	public static final int C_LIGHT_GREY = 4;
+	public static final int C_DARK_GREY = 5;
+	public static final int C_BLACK = 6;
+	public static final int C_BROWN = 7;
+	public static final int C_MEDIUM_BLUE = 8;
+	public static final int C_YELLOW = 9;
+	public static final int C_BRIGHT_GREEN = 10;
+	// TODO: pink, dark purple, medium lavender, lime, pale yellow,
+	// pale orange, tan, dark tan, dark red/maroon, dark blue,
+	// sand green, olive green, dark green, medium azure,
+	// maersk blue, magenta, dark pink, bright pink, light aqua,
+	// light & dark grey (tan-ish vs blue-ish), dark orange
+	// med dk flesh
+	// SEE: http://www.bricksrkids.com/images/legocolors.jpg
+	// SEE: https://www.bricklink.com/catalogColors.asp
 }
