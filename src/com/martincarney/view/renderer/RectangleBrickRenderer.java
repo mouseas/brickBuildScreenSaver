@@ -47,10 +47,13 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		xFace.addPoint(x, y);
 		y -= SCREEN_Z_JOG * brickSize.z;
 		xFace.addPoint(x, y);
-		x += SCREEN_X_JOG * brickSize.x;
-		y += SCREEN_Y_JOG * brickSize.x;
+		x += (SCREEN_X_JOG * brickSize.x) + (SCREEN_X_JOG * brickSize.y);
+		y += (SCREEN_Y_JOG * brickSize.x) - (SCREEN_Y_JOG * brickSize.y);
 		xFace.addPoint(x, y);
 		y += SCREEN_Z_JOG * brickSize.z;
+		xFace.addPoint(x, y);
+		x -= SCREEN_X_JOG * brickSize.y;
+		y += SCREEN_Y_JOG * brickSize.y;
 		xFace.addPoint(x, y);
 		xFace.addPoint(startX, startY);
 		
