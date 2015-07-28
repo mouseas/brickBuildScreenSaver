@@ -10,7 +10,7 @@ public interface BrickRenderer {
 	/**
 	 * Renders the current brick using the provided {@link Graphics2D} instance. If the current brick
 	 * is {@code null}, this method should do nothing. The renderer should always call
-	 * {@link BrickInstance#setRendered(boolean) BrickInstance.setRendered(true)} when it renders a
+	 * {@link BrickInstance#setProcessed(boolean) BrickInstance.setRendered(true)} when it renders a
 	 * brick, so that each brick is only drawn once per draw cycle, in the correct order.
 	 */
 	public void drawBrick(Graphics2D g);

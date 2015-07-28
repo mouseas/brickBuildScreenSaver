@@ -25,16 +25,17 @@ public class RectangleBrickRenderer implements BrickRenderer {
 			return;
 		}
 		
-		int startX = xOffset + (currentBrick.getX() * SCREEN_X_JOG) + (currentBrick.getY() * SCREEN_X_JOG);
-		int startY = yOffset - (currentBrick.getZ() * SCREEN_Z_JOG) + (currentBrick.getX() * SCREEN_Y_JOG)
-				- (currentBrick.getY() * SCREEN_Y_JOG);
+		Dimension brickLoc = currentBrick.getLocation();
+		int startX = xOffset + (brickLoc.x * SCREEN_X_JOG) + (brickLoc.y * SCREEN_X_JOG);
+		int startY = yOffset - (brickLoc.z * SCREEN_Z_JOG) + (brickLoc.x * SCREEN_Y_JOG)
+				- (brickLoc.y * SCREEN_Y_JOG);
 		
 		drawXFace(startX, startY, g);
 		drawYFace(startX, startY, g);
 		drawZFace(startX, startY, g);
 		drawStuds(startX, startY, g);
 		
-		currentBrick.setRendered(true);
+		currentBrick.setProcessed(true);
 	}
 	
 	private void drawXFace(int startX, int startY, Graphics2D g) {

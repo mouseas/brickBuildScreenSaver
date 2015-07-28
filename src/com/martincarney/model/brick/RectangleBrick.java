@@ -14,13 +14,10 @@ import com.martincarney.view.renderer.RectangleBrickRenderer;
 public class RectangleBrick implements BrickPrototype, BrickInstance {
 	
 	private Dimension dimensions;
+	private Dimension location;
 	private Color baseColor;
 	
-	private boolean hasRendered;
-	
-	private int x;
-	private int y;
-	private int z;
+	private boolean hasBeenProcessed;
 	
 	public RectangleBrick(Dimension dimensions, Color baseColor) {
 		this.dimensions = dimensions;
@@ -48,42 +45,17 @@ public class RectangleBrick implements BrickPrototype, BrickInstance {
 	}
 
 	@Override
-	public boolean hasRendered() {
-		return hasRendered;
+	public boolean hasBeenProcessed() {
+		return hasBeenProcessed;
 	}
 
 	@Override
-	public void setRendered(boolean rendered) {
-		this.hasRendered = rendered;
+	public void setProcessed(boolean processed) {
+		this.hasBeenProcessed = processed;
 	}
 
 	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		return y;
-	}
-
-	@Override
-	public int getZ() {
-		return z;
-	}
-
-	@Override
-	public void setX(int newX) {
-		x = newX;
-	}
-
-	@Override
-	public void setY(int newY) {
-		y = newY;
-	}
-
-	@Override
-	public void setZ(int newZ) {
-		z = newZ;
+	public Dimension getLocation() {
+		return location;
 	}
 }

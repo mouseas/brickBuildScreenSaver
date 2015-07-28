@@ -1,6 +1,7 @@
 package com.martincarney.model.brick;
 
 import com.martincarney.model.World;
+import com.martincarney.model.shared.Dimension;
 import com.martincarney.view.renderer.BrickRenderer;
 
 /**
@@ -9,37 +10,23 @@ import com.martincarney.view.renderer.BrickRenderer;
  */
 public interface BrickInstance extends Brick {
 	
-	/** Gets the x position of the brick. */
-	public int getX();
-
-	/** Gets the y position of the brick. */
-	public int getY();
-
-	/** Gets the y position of the brick. */
-	public int getZ();
-
-	/** Sets the x position of the brick. */
-	public void setX(int newX);
-	
-	/** Sets the y position of the brick. */
-	public void setY(int newY);
-	
-	/** Sets the z position of the brick. */
-	public void setZ(int newZ);
+	/** Gets the editable position of the brick. */
+	public Dimension getLocation();
 	
 	/**
-	 * Checks whether the brick has been drawn this draw cycle.
-	 * @return {@code true} if the brick has been drawn this draw cycle, {@code false} if it still needs
-	 * to be drawn.
+	 * Checks whether the brick has been processed, e.g. drawn this draw cycle.
+	 * @return {@code true} if the brick has been processed during the current process. For rendering,
+	 * that means it's been drawn this draw cycle. {@code false} if it still needs
+	 * to be processed.
 	 */
-	public boolean hasRendered();
+	public boolean hasBeenProcessed();
 	
 	/**
-	 * Sets whether the brick has been drawn this draw cycle. {@link World} sets this to {@code false}
-	 * on every brick at the start of a draw cycle, and {@link BrickRenderer} sets it to {@code true}
-	 * when it draws the brick during a draw cycle.
-	 * @param rendered Whether the brick has been drawn this draw cycle.
+	 * Sets whether the brick has been processed during this process. For example, {@link World} sets this
+	 * to {@code false} on every brick at the start of a draw cycle, and {@link BrickRenderer} sets it to
+	 * {@code true} when it draws the brick during a draw cycle.
+	 * @param processed Whether the brick has been processed during this process.
 	 */
-	public void setRendered(boolean rendered);
+	public void setProcessed(boolean processed);
 	
 }

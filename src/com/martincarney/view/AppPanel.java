@@ -42,7 +42,7 @@ public class AppPanel extends JPanel {
 		
 		// reset each brick's hasRendered state so they'll get rendered.
 		for (BrickInstance brick : world.getActiveBricks()) {
-			brick.setRendered(false);
+			brick.setProcessed(false);
 		}
 		
 		// center world horizontally on-screen
@@ -57,7 +57,7 @@ public class AppPanel extends JPanel {
 			for (int j = world.getDimension().y - 1; j >= 0; j--) {
 				for (int k = 0; k < world.getDimension().x; k++) {
 					BrickInstance brick = world.getBrickGrid()[k][j][i];
-					if (brick != null && !brick.hasRendered()) {
+					if (brick != null && !brick.hasBeenProcessed()) {
 						try {
 							BrickRenderer renderer = getBrickRenderer(brick);
 							renderer.setBrick(brick);
@@ -103,9 +103,9 @@ public class AppPanel extends JPanel {
 			Dimension size = new Dimension(1 + rand.nextInt(2), 1 + rand.nextInt(2), 1 + rand.nextInt(3));
 			Color color = BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)];
 			BrickInstance newBrick = new RectangleBrick(size, color);
-			newBrick.setX(rand.nextInt(31 - size.x));
-			newBrick.setY(rand.nextInt(31 - size.y));
-			newBrick.setZ(1 + (3 * rand.nextInt(4)));
+			newBrick.getLocation().x = rand.nextInt(31 - size.x);
+			newBrick.getLocation().y = rand.nextInt(31 - size.y);
+			newBrick.getLocation().z = 1 + (3 * rand.nextInt(4));
 			bricks.add(newBrick);
 		}
 		world.refreshBrickGrid();

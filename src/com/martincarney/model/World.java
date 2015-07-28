@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import com.martincarney.model.brick.BrickInstance;
+import com.martincarney.model.shared.BrickGrid;
 import com.martincarney.model.shared.Dimension;
 
 
@@ -14,6 +15,7 @@ public class World {
 	private BrickInstance currentlyFallingBrick;
 	private Dimension dimension;
 	private BrickInstance[][][] brickGrid;
+	private BrickGrid brickGridTodo;
 	private Collection<BrickInstance> activeBricks;
 	
 	private Collection<EventListener> brickLandedNotifyees;
@@ -36,7 +38,7 @@ public class World {
 				if (fallingBrickCollide()) {
 					brickLanded = true;
 				} else {
-					currentlyFallingBrick.setZ(currentlyFallingBrick.getZ() - 1);
+					currentlyFallingBrick.getLocation().z--;
 				}
 			}
 			
@@ -63,6 +65,9 @@ public class World {
 	 */
 	private boolean fallingBrickCollide() {
 		int collideHeight = currentlyFallingBrick.getDimensions().z - 1;
+		if (collideHeight < 0) { // brick has reached the bottom without landing on anything.
+			return true;
+		}
 		for (int i = 0; i < currentlyFallingBrick.getDimensions().x; i++) {
 			for (int j = 0; j < currentlyFallingBrick.getDimensions().y; j++) {
 				if (brickGrid[i][j][collideHeight] != null) {
@@ -92,7 +97,7 @@ public class World {
 			for (int i = 0; i < brickSize.x; i++) {
 				for (int j = 0; j < brickSize.y; j++) {
 					for (int k = 0; k < brickSize.z; k++) {
-						safeSetGridValue(i + brick.getX(), j + brick.getY(), k + brick.getZ(), brick);
+						safeSetGridValue(i + brick.getLocation().x, j + brick.getLocation().y, k + brick.getLocation().z, brick);
 					}
 				}
 			}
