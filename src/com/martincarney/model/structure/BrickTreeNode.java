@@ -4,12 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.martincarney.model.brick.BrickInstance;
-import com.martincarney.model.structure.BrickStructure.BrickTreeNode;
 
 class BrickTreeNode {
-	/**
-	 * 
-	 */
+	
+	/** enclosing type before this was pulled out into its own file */
 	private final BrickStructure brickStructure;
 
 	private BrickInstance brick;
@@ -18,11 +16,14 @@ class BrickTreeNode {
 	private Set<BrickTreeNode> dependencyBricks; // this brick depends on these
 	
 	public BrickTreeNode(BrickStructure brickStructure, BrickInstance brick) {
-		this.brickStructure = brickStructure;
+		if (brickStructure == null) {
+			throw new NullPointerException("Node must have a non-null " + BrickStructure.class.getSimpleName() + ".");
+		}
 		if (brick == null) {
 			throw new NullPointerException("Node must have a non-null " + BrickInstance.class.getSimpleName() + ".");
 		}
 		
+		this.brickStructure = brickStructure;
 		this.brick = brick;
 		
 		dependentBricks = new HashSet<BrickTreeNode>();
