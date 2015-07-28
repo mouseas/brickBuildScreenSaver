@@ -33,7 +33,11 @@ public class World {
 			// process falling brick, if any
 			boolean brickLanded = false;
 			if (currentlyFallingBrick != null) {
-				// TODO implement brick falling physics
+				if (fallingBrickCollide()) {
+					brickLanded = true;
+				} else {
+					currentlyFallingBrick.setZ(currentlyFallingBrick.getZ() - 1);
+				}
 			}
 			
 			// if landed, notify notifyees (who should, in turn, give the world its next brick)
@@ -41,6 +45,7 @@ public class World {
 				for (EventListener notifyee : brickLandedNotifyees) {
 					notifyee.notify();
 				}
+				currentlyFallingBrick = null;
 			}
 			
 			// notify time passed notifyees
@@ -51,6 +56,23 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Checks if any of the grid locations below the current brick are occupied.
+	 * @return {@code true} if any grid position below the bottom of the brick already has a brick in them.
+	 * {@code false} otherwise.
+	 */
+	private boolean fallingBrickCollide() {
+		int collideHeight = currentlyFallingBrick.getDimensions().z - 1;
+		for (int i = 0; i < currentlyFallingBrick.getDimensions().x; i++) {
+			for (int j = 0; j < currentlyFallingBrick.getDimensions().y; j++) {
+				if (brickGrid[i][j][collideHeight] != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Clears and re-builds the {@code brickGrid} to accurately reflect the bricks in {@code activeBricks}.
 	 */
