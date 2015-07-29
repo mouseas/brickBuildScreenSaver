@@ -25,7 +25,7 @@ public class World {
 	
 	public World(Dimension size) {
 		this.size = new Dimension(size);
-		activeBricks = new LinkedList<BrickInstance>();
+		activeBricks = new HashSet<BrickInstance>();
 		brickGrid = new BrickGrid(size);
 
 		brickLandedNotifyees = new HashSet<>();
@@ -66,13 +66,14 @@ public class World {
 	 * {@code false} otherwise.
 	 */
 	private boolean fallingBrickCollide() {
-		int collideHeight = currentlyFallingBrick.getDimensions().z - 1;
+		int collideHeight = currentlyFallingBrick.getLocation().z - 1;
 		if (collideHeight < 0) { // brick has reached the bottom without landing on anything.
 			return true;
 		}
 		for (int i = 0; i < currentlyFallingBrick.getDimensions().x; i++) {
 			for (int j = 0; j < currentlyFallingBrick.getDimensions().y; j++) {
-				if (brickGrid.get(i, j, collideHeight) != null) {
+				if (!brickGrid.isEmpty(i + currentlyFallingBrick.getLocation().x,
+						j + currentlyFallingBrick.getLocation().y, collideHeight)) {
 					return true;
 				}
 			}

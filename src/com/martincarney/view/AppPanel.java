@@ -132,6 +132,11 @@ public class AppPanel extends JPanel implements ActionListener {
 			newBrick.getLocation().z = 1 + (3 * rand.nextInt(4));
 			bricks.add(newBrick);
 		}
+		BrickInstance fallingBrick = new RectangleBrick(new Dimension(2, 2, 3), BRICK_COLORS[C_WHITE]);
+		fallingBrick.getLocation().x = rand.nextInt(29);
+		fallingBrick.getLocation().y = rand.nextInt(29);
+		fallingBrick.getLocation().z = 80;
+		world.setNextBrick(fallingBrick);
 		world.refreshBrickGrid();
 	}
 
