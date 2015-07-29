@@ -4,17 +4,22 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
+import com.martincarney.control.StructureLoader;
 import com.martincarney.model.World;
 import com.martincarney.model.brick.BrickInstance;
 import com.martincarney.model.brick.RectangleBrick;
 import com.martincarney.model.shared.Dimension;
+import com.martincarney.model.structure.BrickStructure;
 import com.martincarney.view.renderer.BrickRenderer;
 import com.martincarney.view.renderer.RendererConstants;
 
@@ -24,17 +29,31 @@ import static com.martincarney.view.renderer.RendererConstants.*;
  * Visible part of the screensaver when operating normally.
  * @author Martin Carney 2015
  */
-public class AppPanel extends JPanel {
-
-	protected World world;
+public class AppPanel extends JPanel implements ActionListener {
+	
+	private StructureLoader structureLoader;
+	private BrickStructure structure;
+	
+	private World world;
 	
 	private Map<Class<? extends BrickRenderer>, BrickRenderer> renderers;
-
+	
+	private Timer timer;
+	
 	public AppPanel() {
 		renderers = new HashMap<Class<? extends BrickRenderer>, BrickRenderer>();
 		setBackground(Color.BLACK);
 		
+//		structureLoader = new StructureLoader();
+//		StructureLoader.findStructureFiles();
+//		structureLoader.loadStructureFromJSONFile(StructureLoader.getStructureFileList().get(0));
+		
+		
 		generateDebugWorld();
+		
+		timer = new Timer(33, this);
+		timer.setInitialDelay(500);
+		timer.start();
 	}
 
 	@Override
@@ -99,6 +118,7 @@ public class AppPanel extends JPanel {
 	 */
 	private void generateDebugWorld() {
 		world = new World(new Dimension(30, 30, 90));
+		world.getBrickGrid().setIgnoreProblems(true);
 		Random rand = new Random();
 		Collection<BrickInstance> bricks = world.getActiveBricks();
 		BrickInstance baseplate = new RectangleBrick(new Dimension(30, 30, 1), BRICK_COLORS[C_YELLOW]);
@@ -113,5 +133,24 @@ public class AppPanel extends JPanel {
 			bricks.add(newBrick);
 		}
 		world.refreshBrickGrid();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if (world != null) {
+			world.update(1);
+			
+			// if the current brick has landed, drop the next one.
+			if (world.getCurrentlyFallingBrick() == null && structure != null) {
+				if (structure.hasNextBrick()) {
+					world.setNextBrick(structure.popRandomBrickToDrop());
+				} else {
+					// TODO load another structure.
+				}
+			}
+			
+			// redraw
+			repaint();
+		}
 	}
 }

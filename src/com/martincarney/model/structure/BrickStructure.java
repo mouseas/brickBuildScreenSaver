@@ -162,6 +162,10 @@ public class BrickStructure {
 	}
 	
 	public BrickInstance popRandomBrickToDrop() {
+		if (availableBricks.isEmpty()) {
+			return null;
+		}
+		
 		Iterator<BrickTreeNode> iter = availableBricks.iterator();
 		int pick = rand.nextInt(availableBricks.size());
 		for (int i = 0; i < pick - 1; i++) {
@@ -181,5 +185,9 @@ public class BrickStructure {
 		}
 		
 		return pickedNode.getBrick();
+	}
+	
+	public boolean hasNextBrick() {
+		return !availableBricks.isEmpty();
 	}
 }

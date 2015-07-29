@@ -22,6 +22,7 @@ public class RectangleBrick implements BrickPrototype, BrickInstance {
 	public RectangleBrick(Dimension dimensions, Color baseColor) {
 		this.dimensions = dimensions;
 		this.baseColor = baseColor;
+		location = new Dimension();
 	}
 
 	@Override
