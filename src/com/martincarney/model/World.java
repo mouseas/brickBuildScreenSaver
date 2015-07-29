@@ -41,6 +41,7 @@ public class World {
 					brickLanded = true;
 				} else {
 					currentlyFallingBrick.getLocation().z--;
+					refreshBrickGrid();
 				}
 			}
 			
@@ -94,6 +95,7 @@ public class World {
 		}
 		currentlyFallingBrick = nextFallingBrick;
 		activeBricks.add(nextFallingBrick);
+		refreshBrickGrid();
 	}
 
 	public void addBrickLandedEventListener(EventListener listener) {

@@ -48,10 +48,9 @@ public class AppPanel extends JPanel implements ActionListener {
 //		StructureLoader.findStructureFiles();
 //		structureLoader.loadStructureFromJSONFile(StructureLoader.getStructureFileList().get(0));
 		
-		
 		generateDebugWorld();
 		
-		timer = new Timer(33, this);
+		timer = new Timer(20, this);
 		timer.setInitialDelay(500);
 		timer.start();
 	}
@@ -123,21 +122,22 @@ public class AppPanel extends JPanel implements ActionListener {
 		Collection<BrickInstance> bricks = world.getActiveBricks();
 		BrickInstance baseplate = new RectangleBrick(new Dimension(30, 30, 1), BRICK_COLORS[C_YELLOW]);
 		bricks.add(baseplate);
-		for (int i = 0; i < 100; i++) {
-			Dimension size = new Dimension(1 + rand.nextInt(2), 1 + rand.nextInt(2), 1 + rand.nextInt(3));
-			Color color = BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)];
-			BrickInstance newBrick = new RectangleBrick(size, color);
-			newBrick.getLocation().x = rand.nextInt(31 - size.x);
-			newBrick.getLocation().y = rand.nextInt(31 - size.y);
-			newBrick.getLocation().z = 1 + (3 * rand.nextInt(4));
-			bricks.add(newBrick);
-		}
+//		for (int i = 0; i < 10; i++) {
+//			Dimension size = new Dimension(1 + rand.nextInt(2), 1 + rand.nextInt(2), 1 + rand.nextInt(3));
+//			Color color = BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)];
+//			BrickInstance newBrick = new RectangleBrick(size, color);
+//			newBrick.getLocation().x = rand.nextInt(31 - size.x);
+//			newBrick.getLocation().y = rand.nextInt(31 - size.y);
+//			newBrick.getLocation().z = 1 + (3 * rand.nextInt(4));
+//			bricks.add(newBrick);
+//		}
 		BrickInstance fallingBrick = new RectangleBrick(new Dimension(2, 2, 3), BRICK_COLORS[C_WHITE]);
 		fallingBrick.getLocation().x = rand.nextInt(29);
 		fallingBrick.getLocation().y = rand.nextInt(29);
 		fallingBrick.getLocation().z = 80;
 		world.setNextBrick(fallingBrick);
 		world.refreshBrickGrid();
+		structure = new DummyStructure();
 	}
 
 	@Override
@@ -156,6 +156,28 @@ public class AppPanel extends JPanel implements ActionListener {
 			
 			// redraw
 			repaint();
+		}
+	}
+	
+	private class DummyStructure extends BrickStructure {
+		
+		private Random rand = new Random();
+		
+		@Override
+		public BrickInstance popRandomBrickToDrop() {
+			Dimension size = new Dimension(1 + rand.nextInt(4), 1 + rand.nextInt(4), 1 + rand.nextInt(3));
+			BrickInstance fallingBrick = new RectangleBrick(size, BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)]);
+			
+			fallingBrick.getLocation().x = rand.nextInt(31 - size.x);
+			fallingBrick.getLocation().y = rand.nextInt(31 - size.y);
+			fallingBrick.getLocation().z = 80;
+			
+			return fallingBrick;
+		}
+		
+		@Override
+		public boolean hasNextBrick() {
+			return true;
 		}
 	}
 }
