@@ -5,6 +5,10 @@ import java.util.Set;
 
 import com.martincarney.model.brick.BrickInstance;
 
+/**
+ * Two-direction tree structure representing bricks' dependencies within a structure.
+ * @author Martin Carney 2015
+ */
 class BrickTreeNode {
 	
 	/** enclosing type before this was pulled out into its own file */

@@ -29,4 +29,9 @@ public class Dimension {
 		this.y = cloneSource.y;
 		this.z = cloneSource.z;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ", " + z + ")";
+	}
 }

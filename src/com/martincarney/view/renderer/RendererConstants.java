@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * Constants used by {@link BrickRenderer BrickRenderers} to determine how to place and draw
  * bricks on screen in the correct positions.
- * @author Martin Carney
+ * @author Martin Carney 2015
  */
 public abstract class RendererConstants {
 	
