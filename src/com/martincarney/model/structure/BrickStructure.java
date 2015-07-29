@@ -146,7 +146,13 @@ public class BrickStructure {
 		BrickTreeNode newNode = new BrickTreeNode(this, brick);
 		Dimension dim = brick.getDimensions();
 		Dimension loc = brick.getLocation();
-		// FIXME this does not check for the bottom of the grid, and will currently throw an out-of-bounds exception
+		
+		// base case: brick is at the bottom of the grid, lands on the bottom/baseplate.
+		if (loc.z <= 0) {
+			return;
+		}
+		
+		// otherwise: check every cell below the brick for the brick(s) it sits upon.
 		for (int x = loc.x; x < loc.x + dim.x; x++) {
 			for (int y = loc.y; y < loc.y + dim.y; y++) {
 				BrickInstance brickBelow = grid[x][y][loc.z - 1];
