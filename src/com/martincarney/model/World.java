@@ -9,22 +9,24 @@ import com.martincarney.model.brick.BrickInstance;
 import com.martincarney.model.shared.BrickGrid;
 import com.martincarney.model.shared.Dimension;
 
-
+/**
+ * Represents a region of space with bricks in it, and handles dropping bricks and passing time.
+ * @author Martin Carney 2015
+ */
 public class World {
 
 	private BrickInstance currentlyFallingBrick;
-	private Dimension dimension;
-	private BrickInstance[][][] brickGrid;
-	private BrickGrid brickGridTodo;
+	private Dimension size;
+	private BrickGrid brickGrid;
 	private Collection<BrickInstance> activeBricks;
 	
 	private Collection<EventListener> brickLandedNotifyees;
 	private Collection<EventListener> timePassedNotifyees;
 	
-	public World(Dimension dimension) {
-		this.dimension = new Dimension(dimension);
+	public World(Dimension size) {
+		this.size = new Dimension(size);
 		activeBricks = new LinkedList<BrickInstance>();
-		brickGrid = new BrickInstance[dimension.x][dimension.y][dimension.z];
+		brickGrid = new BrickGrid(size);
 
 		brickLandedNotifyees = new HashSet<>();
 		timePassedNotifyees = new HashSet<>();
@@ -70,7 +72,7 @@ public class World {
 		}
 		for (int i = 0; i < currentlyFallingBrick.getDimensions().x; i++) {
 			for (int j = 0; j < currentlyFallingBrick.getDimensions().y; j++) {
-				if (brickGrid[i][j][collideHeight] != null) {
+				if (brickGrid.get(i, j, collideHeight) != null) {
 					return true;
 				}
 			}
@@ -82,38 +84,7 @@ public class World {
 	 * Clears and re-builds the {@code brickGrid} to accurately reflect the bricks in {@code activeBricks}.
 	 */
 	public void refreshBrickGrid() {
-		// first mark every grid cell as empty.
-		for (int i = 0; i < brickGrid.length; i++) {
-			for (int j = 0; j < brickGrid[i].length; j++) {
-				for (int k = 0; k < brickGrid[i][j].length; k++) {
-					brickGrid[i][j][k] = null;
-				}
-			}
-		}
-		
-		// then iterate over each brick in the world and place it in each grid space it occupies.
-		for (BrickInstance brick : activeBricks) {
-			Dimension brickSize = brick.getDimensions();
-			for (int i = 0; i < brickSize.x; i++) {
-				for (int j = 0; j < brickSize.y; j++) {
-					for (int k = 0; k < brickSize.z; k++) {
-						safeSetGridValue(i + brick.getLocation().x, j + brick.getLocation().y, k + brick.getLocation().z, brick);
-					}
-				}
-			}
-		}
-	}
-	
-	/** Checks that the specified coordinate is valid, then sets the brick for that coordinate. */
-	private void safeSetGridValue(int x, int y, int z, BrickInstance brick) {
-		if (x < 0 || x >= brickGrid.length || y < 0 || y >= brickGrid[x].length || z < 0
-				|| z >= brickGrid[x][y].length) {
-			// TODO add a warning that part of a brick is out of the world boundaries.
-			return;
-		}
-		// TODO add a check and a warning if that grid location is already occupied, as that means two bricks
-		// are occupying the same space.
-		brickGrid[x][y][z] = brick;
+		brickGrid.refreshGrid(activeBricks);
 	}
 
 	public void setNextBrick(BrickInstance nextFallingBrick) {
@@ -144,7 +115,7 @@ public class World {
 		brickLandedNotifyees.remove(listener);
 	}
 	
-	public BrickInstance[][][] getBrickGrid() {
+	public BrickGrid getBrickGrid() {
 		return brickGrid;
 	}
 
@@ -157,6 +128,6 @@ public class World {
 	}
 	
 	public Dimension getDimension() {
-		return dimension;
+		return size;
 	}
 }

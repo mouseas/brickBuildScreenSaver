@@ -12,11 +12,12 @@ import java.util.Random;
 
 import com.martincarney.model.World;
 import com.martincarney.model.brick.BrickInstance;
+import com.martincarney.model.shared.BrickGrid;
 import com.martincarney.model.shared.Dimension;
 
 /**
  * Stores the parts of a structure to be built.
- * @author Martin Carney
+ * @author Martin Carney 2015
  */
 public class BrickStructure {
 	
@@ -63,23 +64,20 @@ public class BrickStructure {
 		normalizeBricksAndStructureSize(low, high);
 		structureSize = new Dimension(high);
 		
-		// build a 3D grid and place the bricks in it (World has functionality to do this nicely)
-		// TODO switch from using World to using BrickGrid once the functionality is moved to BrickGrid
-		World tempWorld = new World(new Dimension(structureSize));
-		tempWorld.getActiveBricks().addAll(rawBricks);
-		tempWorld.refreshBrickGrid();
-		BrickInstance[][][] grid = tempWorld.getBrickGrid();
+		// build a 3D grid and place the bricks in it
+		BrickGrid grid = new BrickGrid(structureSize);
+		grid.refreshGrid(rawBricks);
 		
 		// starting from the top layer, determine which bricks depend on which others
 		for (BrickInstance brick : rawBricks) {
 			brick.setProcessed(false);
 		}
-		for (int z = 0; z < grid[0][0].length; z++) {
-			for (int y = 0; y < grid[0].length; y++) {
-				for (int x = 0; x < grid.length; x++) {
-					if (grid[x][y][z] != null && !grid[x][y][z].hasBeenProcessed()) {
-						findBrickDependencies(grid[x][y][z], grid);
-						grid[x][y][z].setProcessed(true);
+		for (int z = 0; z < grid.getSize().z; z++) {
+			for (int y = 0; y < grid.getSize().y; y++) {
+				for (int x = 0; x < grid.getSize().x; x++) {
+					if (!grid.isEmpty(x, y, z) && !grid.get(x, y, z).hasBeenProcessed()) {
+						findBrickDependencies(grid.get(x, y, z), grid);
+						grid.get(x, y, z).setProcessed(true);
 					}
 				}
 			}
@@ -142,7 +140,7 @@ public class BrickStructure {
 	 * @param brick Brick to process
 	 * @param grid 3D brick grid
 	 */
-	private void findBrickDependencies(BrickInstance brick, BrickInstance[][][] grid) {
+	private void findBrickDependencies(BrickInstance brick, BrickGrid grid) {
 		BrickTreeNode newNode = new BrickTreeNode(this, brick);
 		Dimension dim = brick.getDimensions();
 		Dimension loc = brick.getLocation();
@@ -155,7 +153,7 @@ public class BrickStructure {
 		// otherwise: check every cell below the brick for the brick(s) it sits upon.
 		for (int x = loc.x; x < loc.x + dim.x; x++) {
 			for (int y = loc.y; y < loc.y + dim.y; y++) {
-				BrickInstance brickBelow = grid[x][y][loc.z - 1];
+				BrickInstance brickBelow = grid.get(x, y, loc.z - 1);
 				if (brickBelow != null) {
 					newNode.addDependencyBrick(brickBelow);
 				}

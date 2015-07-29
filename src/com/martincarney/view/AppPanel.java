@@ -20,6 +20,10 @@ import com.martincarney.view.renderer.RendererConstants;
 
 import static com.martincarney.view.renderer.RendererConstants.*;
 
+/**
+ * Visible part of the screensaver when operating normally.
+ * @author Martin Carney 2015
+ */
 public class AppPanel extends JPanel {
 
 	protected World world;
@@ -56,7 +60,7 @@ public class AppPanel extends JPanel {
 		for (int i = 0; i < world.getDimension().z; i++) {
 			for (int j = world.getDimension().y - 1; j >= 0; j--) {
 				for (int k = 0; k < world.getDimension().x; k++) {
-					BrickInstance brick = world.getBrickGrid()[k][j][i];
+					BrickInstance brick = world.getBrickGrid().get(k, j, i);
 					if (brick != null && !brick.hasBeenProcessed()) {
 						try {
 							BrickRenderer renderer = getBrickRenderer(brick);
