@@ -75,6 +75,7 @@ public class AppPanel extends JPanel implements ActionListener {
 		int yOffset = (this.getHeight() / 2) + ((world.getDimension().z * SCREEN_Z_JOG) / 2);
 		
 		// render each brick, in order based on its lowest, left-most, most-distant (rather than nearest) corner
+		// FIXME there is some sort of render order bug. Track it down and squish it.
 		for (int i = 0; i < world.getDimension().z; i++) {
 			for (int j = world.getDimension().y - 1; j >= 0; j--) {
 				for (int k = 0; k < world.getDimension().x; k++) {
