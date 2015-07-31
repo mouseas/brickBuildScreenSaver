@@ -13,21 +13,21 @@ import com.martincarney.view.renderer.RectangleBrickRenderer;
  */
 public class RectangleBrick implements BrickPrototype, BrickInstance {
 	
-	private Dimension dimensions;
+	private Dimension size;
 	private Dimension location;
 	private Color baseColor;
 	
 	private boolean hasBeenProcessed;
 	
-	public RectangleBrick(Dimension dimensions, Color baseColor) {
-		this.dimensions = dimensions;
-		this.baseColor = baseColor;
+	public RectangleBrick() {
+		size = new Dimension();
 		location = new Dimension();
+		baseColor = null;
 	}
 
 	@Override
-	public Dimension getDimensions() {
-		return dimensions;
+	public Dimension getSize() {
+		return size;
 	}
 
 	@Override
@@ -37,7 +37,18 @@ public class RectangleBrick implements BrickPrototype, BrickInstance {
 
 	@Override
 	public BrickInstance createInstance() {
-		return new RectangleBrick(this.dimensions, this.baseColor);
+		RectangleBrick result = new RectangleBrick();
+		
+		result.size.x = this.size.x;
+		result.size.y = this.size.y;
+		result.size.z = this.size.z;
+		if (this.baseColor instanceof RandomColor) {
+			result.baseColor = ((RandomColor) this.baseColor).pickRandomColor();
+		} else {
+			result.baseColor = this.baseColor;
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -58,5 +69,10 @@ public class RectangleBrick implements BrickPrototype, BrickInstance {
 	@Override
 	public Dimension getLocation() {
 		return location;
+	}
+
+	@Override
+	public void setBaseColor(Color color) {
+		this.baseColor = color;
 	}
 }

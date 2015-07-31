@@ -16,13 +16,17 @@ public interface Brick {
 	 * Gets the outer bounding dimensions of the brick, which can be used for preliminary collision detection
 	 * and for verifying a structure is valid.
 	 */
-	public Dimension getDimensions();
+	public Dimension getSize();
 	
 	/**
 	 * Gets the base color for the brick, which is used when rendering the brick's visual representation.
-	 * @return
 	 */
 	public Color getBaseColor();
+	
+	/**
+	 * Sets the base color for the brick, which is used when rendering the brick's visual representation.
+	 */
+	public void setBaseColor(Color color);
 	
 	/**
 	 * Get the type of Renderer that this brick type can use.

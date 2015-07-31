@@ -32,6 +32,8 @@ class BrickTreeNode {
 		
 		dependentBricks = new HashSet<BrickTreeNode>();
 		dependencyBricks = new HashSet<BrickTreeNode>();
+		
+		brickStructure.brickNodes.put(brick, this);
 	}
 	
 	public BrickInstance getBrick() {

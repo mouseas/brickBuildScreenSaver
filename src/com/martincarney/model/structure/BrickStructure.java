@@ -57,8 +57,8 @@ public class BrickStructure {
 		}
 		
 		// determine the upper and lower bounds of each dimension of the structure.
-		Dimension low = new Dimension(rawBricks.get(0).getDimensions());
-		Dimension high = new Dimension(rawBricks.get(0).getDimensions());
+		Dimension low = new Dimension(rawBricks.get(0).getSize());
+		Dimension high = new Dimension(rawBricks.get(0).getSize());
 		determineStructureBounds(low, high);
 		
 		normalizeBricksAndStructureSize(low, high);
@@ -94,7 +94,7 @@ public class BrickStructure {
 	private void determineStructureBounds(Dimension low, Dimension high) {
 		for (BrickInstance brick : rawBricks) {
 			Dimension brickLoc = brick.getLocation();
-			Dimension brickDim = brick.getDimensions();
+			Dimension brickDim = brick.getSize();
 			if (brickLoc.x < low.x) {
 				low.x = brickLoc.x;
 			}
@@ -142,7 +142,7 @@ public class BrickStructure {
 	 */
 	private void findBrickDependencies(BrickInstance brick, BrickGrid grid) {
 		BrickTreeNode newNode = new BrickTreeNode(this, brick);
-		Dimension dim = brick.getDimensions();
+		Dimension dim = brick.getSize();
 		Dimension loc = brick.getLocation();
 		
 		// base case: brick is at the bottom of the grid, lands on the bottom/baseplate.
@@ -190,4 +190,9 @@ public class BrickStructure {
 	public boolean hasNextBrick() {
 		return !availableBricks.isEmpty();
 	}
+	
+	public Dimension getStructureSize() {
+		return structureSize;
+	}
+
 }

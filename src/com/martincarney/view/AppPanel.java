@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,11 +45,10 @@ public class AppPanel extends JPanel implements ActionListener {
 		renderers = new HashMap<Class<? extends BrickRenderer>, BrickRenderer>();
 		setBackground(Color.BLACK);
 		
-//		structureLoader = new StructureLoader();
+		structureLoader = new StructureLoader();
 //		StructureLoader.findStructureFiles();
-//		structureLoader.loadStructureFromJSONFile(StructureLoader.getStructureFileList().get(0));
-		
-		generateDebugWorld();
+		structure = structureLoader.loadStructureFromJSONFile(new File("structures/testStruct1.json"));
+		prepWorldForStructure(structure);
 		
 		timer = new Timer(20, this);
 		timer.setInitialDelay(500);
@@ -75,7 +75,11 @@ public class AppPanel extends JPanel implements ActionListener {
 		int yOffset = (this.getHeight() / 2) + ((world.getDimension().z * SCREEN_Z_JOG) / 2);
 		
 		// render each brick, in order based on its lowest, left-most, most-distant (rather than nearest) corner
-		// FIXME there is some sort of render order bug. Track it down and squish it.
+		/*
+		 * FIXME there is some sort of render order bug. Track it down and squish it.
+		 * Looks like it needs to render back to front, rather than diagonally. Which is diagonal in terms
+		 * of the grid.
+		 */
 		for (int i = 0; i < world.getDimension().z; i++) {
 			for (int j = world.getDimension().y - 1; j >= 0; j--) {
 				for (int k = 0; k < world.getDimension().x; k++) {
@@ -112,6 +116,12 @@ public class AppPanel extends JPanel implements ActionListener {
 		return renderers.get(rendererClass);
 	}
 	
+	private void prepWorldForStructure(BrickStructure structure) {
+		Dimension worldSize = structure.getStructureSize();
+		worldSize.z += 15;
+		world = new World(worldSize);
+	}
+	
 	/**
 	 * @deprecated implemented only for the development phase. Builds a World object with a few
 	 * bricks in it to use to test the render engine.
@@ -121,7 +131,11 @@ public class AppPanel extends JPanel implements ActionListener {
 		world.getBrickGrid().setIgnoreProblems(true);
 		Random rand = new Random();
 		Collection<BrickInstance> bricks = world.getActiveBricks();
-		BrickInstance baseplate = new RectangleBrick(new Dimension(30, 30, 1), BRICK_COLORS[C_YELLOW]);
+		BrickInstance baseplate = new RectangleBrick();
+		baseplate.getSize().x = 30;
+		baseplate.getSize().y = 30;
+		baseplate.getSize().z = 1;
+		baseplate.setBaseColor(BRICK_COLORS[C_YELLOW]);
 		bricks.add(baseplate);
 //		for (int i = 0; i < 10; i++) {
 //			Dimension size = new Dimension(1 + rand.nextInt(2), 1 + rand.nextInt(2), 1 + rand.nextInt(3));
@@ -132,7 +146,12 @@ public class AppPanel extends JPanel implements ActionListener {
 //			newBrick.getLocation().z = 1 + (3 * rand.nextInt(4));
 //			bricks.add(newBrick);
 //		}
-		BrickInstance fallingBrick = new RectangleBrick(new Dimension(2, 2, 3), BRICK_COLORS[C_WHITE]);
+		BrickInstance fallingBrick = new RectangleBrick();
+
+		fallingBrick.getSize().x = 2;
+		fallingBrick.getSize().y = 2;
+		fallingBrick.getSize().z = 3;
+		fallingBrick.setBaseColor(BRICK_COLORS[C_WHITE]);
 		fallingBrick.getLocation().x = rand.nextInt(29);
 		fallingBrick.getLocation().y = rand.nextInt(29);
 		fallingBrick.getLocation().z = 80;
@@ -149,7 +168,9 @@ public class AppPanel extends JPanel implements ActionListener {
 			// if the current brick has landed, drop the next one.
 			if (world.getCurrentlyFallingBrick() == null && structure != null) {
 				if (structure.hasNextBrick()) {
-					world.setNextBrick(structure.popRandomBrickToDrop());
+					BrickInstance nextBrick = structure.popRandomBrickToDrop();
+					nextBrick.getLocation().z = world.getDimension().z - nextBrick.getSize().z;
+					world.setNextBrick(nextBrick);
 				} else {
 					// TODO load another structure.
 				}
@@ -167,7 +188,13 @@ public class AppPanel extends JPanel implements ActionListener {
 		@Override
 		public BrickInstance popRandomBrickToDrop() {
 			Dimension size = new Dimension(1 + rand.nextInt(4), 1 + rand.nextInt(4), 1 + rand.nextInt(3));
-			BrickInstance fallingBrick = new RectangleBrick(size, BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)]);
+			BrickInstance fallingBrick = new RectangleBrick();
+			
+			fallingBrick.getSize().x = size.x;
+			fallingBrick.getSize().y = size.y;
+			fallingBrick.getSize().z = size.z;
+			
+			fallingBrick.setBaseColor(BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)]);
 			
 			fallingBrick.getLocation().x = rand.nextInt(31 - size.x);
 			fallingBrick.getLocation().y = rand.nextInt(31 - size.y);

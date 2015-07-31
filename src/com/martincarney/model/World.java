@@ -71,8 +71,8 @@ public class World {
 		if (collideHeight < 0) { // brick has reached the bottom without landing on anything.
 			return true;
 		}
-		for (int i = 0; i < currentlyFallingBrick.getDimensions().x; i++) {
-			for (int j = 0; j < currentlyFallingBrick.getDimensions().y; j++) {
+		for (int i = 0; i < currentlyFallingBrick.getSize().x; i++) {
+			for (int j = 0; j < currentlyFallingBrick.getSize().y; j++) {
 				if (!brickGrid.isEmpty(i + currentlyFallingBrick.getLocation().x,
 						j + currentlyFallingBrick.getLocation().y, collideHeight)) {
 					return true;

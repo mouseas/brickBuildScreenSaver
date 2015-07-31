@@ -39,7 +39,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 	}
 	
 	private void drawXFace(int startX, int startY, Graphics2D g) {
-		Dimension brickSize = currentBrick.getDimensions();
+		Dimension brickSize = currentBrick.getSize();
 		
 		Polygon xFace = new Polygon();
 		int x = startX;
@@ -62,7 +62,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 	}
 	
 	private void drawYFace(int startX, int startY, Graphics2D g) {
-		Dimension brickSize = currentBrick.getDimensions();
+		Dimension brickSize = currentBrick.getSize();
 		
 		Polygon yFace = new Polygon();
 		int x = startX + (SCREEN_X_JOG * brickSize.x);
@@ -82,7 +82,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 	}
 	
 	private void drawZFace(int startX, int startY, Graphics2D g) {
-		Dimension brickSize = currentBrick.getDimensions();
+		Dimension brickSize = currentBrick.getSize();
 		
 		Polygon zFace = new Polygon();
 		int x = startX;
@@ -104,11 +104,11 @@ public class RectangleBrickRenderer implements BrickRenderer {
 	}
 	
 	private void drawStuds(int startX, int startY, Graphics2D g) {
-		for (int i = 0; i < currentBrick.getDimensions().x; i++) {
-			for (int j = 0; j < currentBrick.getDimensions().y; j++) {
+		for (int i = 0; i < currentBrick.getSize().x; i++) {
+			for (int j = 0; j < currentBrick.getSize().y; j++) {
 				int x = startX + SCREEN_STUD_X_OFFSET + (i * SCREEN_X_JOG) + (j * SCREEN_X_JOG);
 				int y = startY - SCREEN_STUD_Y_OFFSET + (i * SCREEN_Y_JOG) - (j * SCREEN_Y_JOG)
-						- (currentBrick.getDimensions().z * SCREEN_Z_JOG);
+						- (currentBrick.getSize().z * SCREEN_Z_JOG);
 				Ellipse2D studBottom = new Ellipse2D.Float(x, y, SCREEN_STUD_WIDTH, SCREEN_STUD_TOP_HEIGHT);
 				g.setColor(currentBrick.getBaseColor());
 				g.fill(studBottom);

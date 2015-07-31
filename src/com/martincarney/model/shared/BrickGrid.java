@@ -80,7 +80,7 @@ public class BrickGrid {
 		
 		// then iterate over each brick in the world and place it in each grid space it occupies.
 		for (BrickInstance brick : bricks) {
-			Dimension brickSize = brick.getDimensions();
+			Dimension brickSize = brick.getSize();
 			for (int i = 0; i < brickSize.x; i++) {
 				for (int j = 0; j < brickSize.y; j++) {
 					for (int k = 0; k < brickSize.z; k++) {
