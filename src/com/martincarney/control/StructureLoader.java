@@ -22,6 +22,7 @@ import com.martincarney.model.brick.BrickPrototype;
 import com.martincarney.model.brick.RandomColor;
 import com.martincarney.model.shared.Dimension;
 import com.martincarney.model.structure.BrickStructure;
+import com.martincarney.view.renderer.RendererConstants;
 
 /**
  * Tool to load a brick structure from file and create a {@link BrickStructure} from it, which can
@@ -74,6 +75,9 @@ public class StructureLoader {
 					String colorStr = prototypeJson.getString("color");
 					if ("random".equals(colorStr)) {
 						prototype.setBaseColor(new RandomColor());
+					} else if (colorStr.startsWith("C")) {
+						int colorIndex = Integer.parseInt(colorStr.substring(1));
+						prototype.setBaseColor(RendererConstants.BRICK_COLORS[colorIndex]);
 					} else {
 						prototype.setBaseColor(Color.decode(colorStr));
 					}

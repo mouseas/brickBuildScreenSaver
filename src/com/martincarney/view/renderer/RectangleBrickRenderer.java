@@ -19,8 +19,8 @@ public class RectangleBrickRenderer implements BrickRenderer {
 	
 	private RectangleBrick currentBrick;
 	
-	private int xColumn;
-	private int yColumn;
+	private int xRenderColumn;
+	private int yRenderColumn;
 
 	@Override
 	public void drawBrick(Graphics2D g, int xColumn, int yColumn) {
@@ -28,13 +28,13 @@ public class RectangleBrickRenderer implements BrickRenderer {
 			return;
 		}
 		
-		this.xColumn = xColumn;
-		this.yColumn = yColumn;
+		this.xRenderColumn = xColumn;
+		this.yRenderColumn = yColumn;
 		
 		Dimension brickLoc = currentBrick.getLocation();
-		int startX = xOffset + (xColumn * SCREEN_X_JOG) + (yColumn * SCREEN_X_JOG);
-		int startY = yOffset - (brickLoc.z * SCREEN_Z_JOG) + (xColumn * SCREEN_Y_JOG)
-				- (yColumn * SCREEN_Y_JOG);
+		int startX = xOffset + (xRenderColumn * SCREEN_X_JOG) + (yRenderColumn * SCREEN_X_JOG);
+		int startY = yOffset - (brickLoc.z * SCREEN_Z_JOG) + (xRenderColumn * SCREEN_Y_JOG)
+				- (yRenderColumn * SCREEN_Y_JOG);
 		
 		drawXFace(startX, startY, g);
 		drawYFace(startX, startY, g);

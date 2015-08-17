@@ -77,9 +77,10 @@ public class AppPanel extends JPanel implements ActionListener {
 		 */
 		for (int i = 0; i < world.getDimension().x; i++) {
 			for (int j = world.getDimension().y - 1; j >= 0; j--) {
+				BrickInstance previousBrick = null;
 				for (int k = 0; k < world.getDimension().z; k++) {
 					BrickInstance brick = world.getBrickGrid().get(i, j, k);
-					if (brick != null) {
+					if (brick != null && brick != previousBrick) {
 						try {
 							BrickRenderer renderer = getBrickRenderer(brick);
 							renderer.setBrick(brick);
@@ -89,6 +90,7 @@ public class AppPanel extends JPanel implements ActionListener {
 							e.printStackTrace();
 						}
 					}
+					previousBrick = brick;
 				}
 			}
 		}
