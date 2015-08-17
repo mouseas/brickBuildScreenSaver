@@ -13,7 +13,7 @@ public interface BrickRenderer {
 	 * {@link BrickInstance#setProcessed(boolean) BrickInstance.setRendered(true)} when it renders a
 	 * brick, so that each brick is only drawn once per draw cycle, in the correct order.
 	 */
-	public void drawBrick(Graphics2D g);
+	public void drawBrick(Graphics2D g, int xColumn, int yColumn);
 	
 	/**
 	 * Sets the current brick to be rendered. The brick's type must be a type that the BrickRenderer

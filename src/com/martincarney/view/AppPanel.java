@@ -62,11 +62,6 @@ public class AppPanel extends JPanel implements ActionListener {
 		Graphics2D gfx = (Graphics2D) graphics;
 		gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		// reset each brick's hasRendered state so they'll get rendered.
-		for (BrickInstance brick : world.getActiveBricks()) {
-			brick.setProcessed(false);
-		}
-		
 		// center world horizontally on-screen
 		int xOffset = (this.getWidth() / 2) -
 				(((world.getDimension().x * SCREEN_X_JOG) + (world.getDimension().y * SCREEN_X_JOG)) / 2);
@@ -80,16 +75,16 @@ public class AppPanel extends JPanel implements ActionListener {
 		 * Looks like it needs to render back to front, rather than diagonally. Which is diagonal in terms
 		 * of the grid.
 		 */
-		for (int i = 0; i < world.getDimension().z; i++) {
+		for (int i = 0; i < world.getDimension().x; i++) {
 			for (int j = world.getDimension().y - 1; j >= 0; j--) {
-				for (int k = 0; k < world.getDimension().x; k++) {
-					BrickInstance brick = world.getBrickGrid().get(k, j, i);
-					if (brick != null && !brick.hasBeenProcessed()) {
+				for (int k = 0; k < world.getDimension().z; k++) {
+					BrickInstance brick = world.getBrickGrid().get(i, j, k);
+					if (brick != null) {
 						try {
 							BrickRenderer renderer = getBrickRenderer(brick);
 							renderer.setBrick(brick);
 							renderer.setGraphicsOffset(xOffset, yOffset);
-							renderer.drawBrick(gfx);
+							renderer.drawBrick(gfx, i, j);
 						} catch (InstantiationException | IllegalAccessException e) {
 							e.printStackTrace();
 						}
@@ -122,44 +117,6 @@ public class AppPanel extends JPanel implements ActionListener {
 		world = new World(worldSize);
 	}
 	
-	/**
-	 * @deprecated implemented only for the development phase. Builds a World object with a few
-	 * bricks in it to use to test the render engine.
-	 */
-	private void generateDebugWorld() {
-		world = new World(new Dimension(30, 30, 90));
-		world.getBrickGrid().setIgnoreProblems(true);
-		Random rand = new Random();
-		Collection<BrickInstance> bricks = world.getActiveBricks();
-		BrickInstance baseplate = new RectangleBrick();
-		baseplate.getSize().x = 30;
-		baseplate.getSize().y = 30;
-		baseplate.getSize().z = 1;
-		baseplate.setBaseColor(BRICK_COLORS[C_YELLOW]);
-		bricks.add(baseplate);
-//		for (int i = 0; i < 10; i++) {
-//			Dimension size = new Dimension(1 + rand.nextInt(2), 1 + rand.nextInt(2), 1 + rand.nextInt(3));
-//			Color color = BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)];
-//			BrickInstance newBrick = new RectangleBrick(size, color);
-//			newBrick.getLocation().x = rand.nextInt(31 - size.x);
-//			newBrick.getLocation().y = rand.nextInt(31 - size.y);
-//			newBrick.getLocation().z = 1 + (3 * rand.nextInt(4));
-//			bricks.add(newBrick);
-//		}
-		BrickInstance fallingBrick = new RectangleBrick();
-
-		fallingBrick.getSize().x = 2;
-		fallingBrick.getSize().y = 2;
-		fallingBrick.getSize().z = 3;
-		fallingBrick.setBaseColor(BRICK_COLORS[C_WHITE]);
-		fallingBrick.getLocation().x = rand.nextInt(29);
-		fallingBrick.getLocation().y = rand.nextInt(29);
-		fallingBrick.getLocation().z = 80;
-		world.setNextBrick(fallingBrick);
-		world.refreshBrickGrid();
-		structure = new DummyStructure();
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (world != null) {
@@ -178,34 +135,6 @@ public class AppPanel extends JPanel implements ActionListener {
 			
 			// redraw
 			repaint();
-		}
-	}
-	
-	private class DummyStructure extends BrickStructure {
-		
-		private Random rand = new Random();
-		
-		@Override
-		public BrickInstance popRandomBrickToDrop() {
-			Dimension size = new Dimension(1 + rand.nextInt(4), 1 + rand.nextInt(4), 1 + rand.nextInt(3));
-			BrickInstance fallingBrick = new RectangleBrick();
-			
-			fallingBrick.getSize().x = size.x;
-			fallingBrick.getSize().y = size.y;
-			fallingBrick.getSize().z = size.z;
-			
-			fallingBrick.setBaseColor(BRICK_COLORS[rand.nextInt(BRICK_COLORS.length)]);
-			
-			fallingBrick.getLocation().x = rand.nextInt(31 - size.x);
-			fallingBrick.getLocation().y = rand.nextInt(31 - size.y);
-			fallingBrick.getLocation().z = 80;
-			
-			return fallingBrick;
-		}
-		
-		@Override
-		public boolean hasNextBrick() {
-			return true;
 		}
 	}
 }

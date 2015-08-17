@@ -12,6 +12,10 @@
 			"type" : "RectangleBrick",
 			"color" : "random",
 			"size" : [2, 12, 1]
+		}, {
+			"type" : "RectangleBrick",
+			"color" : "random",
+			"size" : [1, 1, 1]
 		}
 	],
 	"instances" : [
@@ -54,6 +58,9 @@
 		}, {
 			"prototype" : 1,
 			"loc" : [1, 7, 4]
+		}, {
+			"prototype" : 3,
+			"loc" : [4, 7, 3]
 		}
 	]
 }
