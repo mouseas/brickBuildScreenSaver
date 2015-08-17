@@ -23,21 +23,25 @@ public class RectangleBrickRenderer implements BrickRenderer {
 	private int yRenderColumn;
 
 	@Override
-	public void drawBrick(Graphics2D g, int xColumn, int yColumn) {
+	public void drawBrick(Graphics2D g, int columnX, int columnY) {
 		if (currentBrick == null) {
 			return;
 		}
 		
-		this.xRenderColumn = xColumn;
-		this.yRenderColumn = yColumn;
+		this.xRenderColumn = columnX;
+		this.yRenderColumn = columnY;
 		
 		Dimension brickLoc = currentBrick.getLocation();
 		int startX = xOffset + (xRenderColumn * SCREEN_X_JOG) + (yRenderColumn * SCREEN_X_JOG);
 		int startY = yOffset - (brickLoc.z * SCREEN_Z_JOG) + (xRenderColumn * SCREEN_Y_JOG)
 				- (yRenderColumn * SCREEN_Y_JOG);
 		
-		drawXFace(startX, startY, g);
-		drawYFace(startX, startY, g);
+		if (yRenderColumn == brickLoc.y) {
+			drawXFace(startX, startY, g);
+		}
+		if (xRenderColumn == brickLoc.x + currentBrick.getSize().x - 1) {
+			drawYFace(startX, startY, g);
+		}
 		drawZFace(startX, startY, g);
 		drawStuds(startX, startY, g);
 	}
