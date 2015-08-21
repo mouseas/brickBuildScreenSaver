@@ -14,8 +14,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import com.martincarney.model.brick.Brick;
 import com.martincarney.model.brick.BrickInstance;
 import com.martincarney.model.brick.BrickPrototype;
@@ -127,7 +125,7 @@ public class StructureLoader {
 
 	public BrickStructure loadStructureFromBinaryFile(File file) {
 		// TODO implement structure file loading
-		throw new NotImplementedException();
+		throw new NullPointerException();
 	}
 	
 	/**
@@ -136,7 +134,7 @@ public class StructureLoader {
 	public static void findStructureFiles() {
 		// TODO determine where structure files should be stored -> "structures" directory for now
 		// TODO implement finding structure files
-		throw new NotImplementedException();
+		throw new NullPointerException();
 	}
 	
 	/**

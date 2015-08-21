@@ -14,14 +14,14 @@ import static com.martincarney.view.renderer.RendererConstants.*;
 
 public class RectangleBrickRenderer implements BrickRenderer {
 	
-	private int xOffset;
-	private int yOffset;
+	protected int xOffset;
+	protected int yOffset;
 	
-	private RectangleBrick currentBrick;
+	protected RectangleBrick currentBrick;
 	
-	private int xRenderColumn;
-	private int yRenderColumn;
-
+	protected int xRenderColumn;
+	protected int yRenderColumn;
+	
 	@Override
 	public void drawBrick(Graphics2D g, int columnX, int columnY) {
 		if (currentBrick == null) {
@@ -46,7 +46,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		drawStuds(startX, startY, g);
 	}
 	
-	private void drawXFace(int startX, int startY, Graphics2D g) {
+	protected void drawXFace(int startX, int startY, Graphics2D g) {
 		Dimension brickSize = currentBrick.getSize();
 		
 		Polygon xFace = new Polygon();
@@ -69,7 +69,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		g.fill(xFace);
 	}
 	
-	private void drawYFace(int startX, int startY, Graphics2D g) {
+	protected void drawYFace(int startX, int startY, Graphics2D g) {
 		Dimension brickSize = currentBrick.getSize();
 		
 		Polygon yFace = new Polygon();
@@ -89,7 +89,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		g.fill(yFace);
 	}
 	
-	private void drawZFace(int startX, int startY, Graphics2D g) {
+	protected void drawZFace(int startX, int startY, Graphics2D g) {
 		Dimension brickSize = currentBrick.getSize();
 		
 		Polygon zFace = new Polygon();
@@ -111,7 +111,7 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		g.fill(zFace);
 	}
 	
-	private void drawStuds(int startX, int startY, Graphics2D g) {
+	protected void drawStuds(int startX, int startY, Graphics2D g) {
 		int x = startX + SCREEN_STUD_X_OFFSET;
 		int y = startY - SCREEN_STUD_Y_OFFSET - (currentBrick.getSize().z * SCREEN_Z_JOG);
 		Ellipse2D studBottom = new Ellipse2D.Float(x, y, SCREEN_STUD_WIDTH, SCREEN_STUD_TOP_HEIGHT);
@@ -128,11 +128,11 @@ public class RectangleBrickRenderer implements BrickRenderer {
 		g.fill(studTop);
 	}
 
-	private Color getLighterColor(Color midColor) {
+	protected Color getLighterColor(Color midColor) {
 		return midColor.brighter();
 	}
 
-	private Color getDarkerColor(Color midColor) {
+	protected Color getDarkerColor(Color midColor) {
 		return midColor.darker();
 	}
 
