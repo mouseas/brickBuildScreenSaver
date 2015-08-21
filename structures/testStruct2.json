@@ -1,0 +1,66 @@
+{
+	"prototypes" : [
+		{
+			"type" : "RectangleBrick",
+			"color" : "random",
+			"size" : [2, 2, 3]
+		}, {
+			"type" : "FlatBrick",
+			"color" : "C3",
+			"size" : [4, 1, 1]
+		}, {
+			"type" : "RectangleBrick",
+			"color" : "C5",
+			"size" : [2, 12, 1]
+		}, {
+			"type" : "RectangleBrick",
+			"color" : "C3",
+			"size" : [1, 1, 1]
+		}
+	],
+	"instances" : [
+		{
+			"prototype" : 2,
+			"loc" : [0, 0, 0]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 0, 1]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 2, 1]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 4, 1]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 6, 1]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 8, 1]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 10, 1]
+		}, {
+			"prototype" : 0,
+			"loc" : [2, 0, 0]
+		}, {
+			"prototype" : 0,
+			"loc" : [2, 2, 0]
+		}, {
+			"prototype" : 0,
+			"loc" : [4, 2, 0]
+		}, {
+			"prototype" : 0,
+			"loc" : [4, 6, 0]
+		}, {
+			"prototype" : 0,
+			"loc" : [0, 2, 4]
+		}, {
+			"prototype" : 1,
+			"loc" : [1, 7, 4]
+		}, {
+			"prototype" : 3,
+			"loc" : [4, 7, 3]
+		}
+	]
+}

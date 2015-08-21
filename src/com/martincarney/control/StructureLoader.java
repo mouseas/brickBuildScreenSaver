@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -31,6 +32,42 @@ public class StructureLoader {
 	
 	private static List<File> structureFiles = new ArrayList<File>();
 	
+	public BrickStructure loadNextStructureFile() {
+		BrickStructure result = null;
+		while (result == null && !structureFiles.isEmpty()) {
+			// pick a random file
+			int index = (int) (Math.random() * structureFiles.size());
+			File file = structureFiles.get(index);
+			
+			// load it
+			try {
+				result = loadStructureFromFile(file);
+			} catch (Exception e) {
+				result = null;
+			}
+			
+			// if an error occurred, removed the bad file from the structure list.
+			if (result == null) {
+				File errFile = structureFiles.remove(index);
+				System.out.println("Removed " + errFile.getPath() + " because it was invalid.");
+			}
+		}
+		return result;
+	}
+	
+	public BrickStructure loadStructureFromFile(File file) {
+		if (isStructureFile(file)) {
+			String lowerName = file.getName().toLowerCase();
+			if (lowerName.endsWith(".json")) {
+				return loadStructureFromJSONFile(file);
+			} else {
+				return loadStructureFromBinaryFile(file);
+			}
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * Loads a {@link BrickStructure} from the provided JSON file
 	 * @param file Reference to a JSON file ("*.json") containing data from which to construct a
@@ -38,17 +75,21 @@ public class StructureLoader {
 	 * @return the completed {@link BrickStructure} object if leading was successful, null if not.
 	 */
 	public BrickStructure loadStructureFromJSONFile(File file) {
-		if (file.exists() && file.canRead()) {
-			JSONObject document = new JSONObject(loadFileToString(file));
-			JSONArray prototypesJson = document.getJSONArray("prototypes");
-			JSONArray instancesJson = document.getJSONArray("instances");
-			
-			List<BrickPrototype> prototypes = loadJsonBrickPrototypes(prototypesJson);
-			List<BrickInstance> instances = loadJsonBrickInstances(prototypes, instancesJson);
-			
-			BrickStructure result = new BrickStructure();
-			result.provideBricks(instances);
-			return result;
+		try {
+			if (file.exists() && file.canRead()) {
+				JSONObject document = new JSONObject(loadFileToString(file));
+				JSONArray prototypesJson = document.getJSONArray("prototypes");
+				JSONArray instancesJson = document.getJSONArray("instances");
+				
+				List<BrickPrototype> prototypes = loadJsonBrickPrototypes(prototypesJson);
+				List<BrickInstance> instances = loadJsonBrickInstances(prototypes, instancesJson);
+				
+				BrickStructure result = new BrickStructure();
+				result.provideBricks(instances);
+				return result;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -132,9 +173,36 @@ public class StructureLoader {
 	 * Find all the Structure files within the defined structure file directory.
 	 */
 	public static void findStructureFiles() {
-		// TODO determine where structure files should be stored -> "structures" directory for now
-		// TODO implement finding structure files
-		throw new NullPointerException();
+		structureFiles = new LinkedList<File>();
+		LinkedList<File> unexploredDirectories = new LinkedList<File>();
+		File baseDir = new File("structures");
+		
+		if (baseDir.exists() && baseDir.isDirectory()) {
+			// load base directory's files
+			recursiveFindStructureFiles(baseDir, unexploredDirectories);
+			
+			// load sub-directories' files, breadth-first
+			while (!unexploredDirectories.isEmpty()) {
+				recursiveFindStructureFiles(unexploredDirectories.pop(), unexploredDirectories);
+			}
+		} else {
+			throw new IllegalStateException("Unable to locate structures folder.");
+		}
+	}
+	
+	private static void recursiveFindStructureFiles(File directory, LinkedList<File> unexploredDirectories) {
+		File[] files = directory.listFiles();
+		
+		for (int i = 0; i < files.length; i++) {
+			File file = files[i];
+			if (file.isDirectory() && !file.isHidden()) {
+				unexploredDirectories.addLast(file);
+			} else if (file.isFile()) {
+				if (isStructureFile(file)) {
+					structureFiles.add(file);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -156,5 +224,14 @@ public class StructureLoader {
 			e.printStackTrace();
 		}
 		return sb.toString();
+	}
+	
+	private static boolean isStructureFile(File file) {
+		if (file.exists() && file.isFile() && !file.isHidden()) {
+			String lowerName = file.getName().toLowerCase();
+			return lowerName.endsWith(".json") || lowerName.endsWith(".bin") || lowerName.endsWith(".struct");
+		} else {
+			return false;
+		}
 	}
 }

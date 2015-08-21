@@ -32,6 +32,12 @@ import static com.martincarney.view.renderer.RendererConstants.*;
  */
 public class AppPanel extends JPanel implements ActionListener {
 	
+	private static final int SEC = 1000;
+	private static final int FPS = 50;
+	
+	private static final int COUNTDOWN_LENGTH = 3 * FPS; // 3 seconds
+	private static final int FRAME_LENGTH = SEC / FPS;
+	
 	private StructureLoader structureLoader;
 	private BrickStructure structure;
 	
@@ -41,17 +47,19 @@ public class AppPanel extends JPanel implements ActionListener {
 	
 	private Timer timer;
 	
+	private int doneCountdown = COUNTDOWN_LENGTH;
+	
 	public AppPanel() {
 		renderers = new HashMap<Class<? extends BrickRenderer>, BrickRenderer>();
 		setBackground(Color.BLACK);
 		
 		structureLoader = new StructureLoader();
-//		StructureLoader.findStructureFiles();
-		structure = structureLoader.loadStructureFromJSONFile(new File("structures/testStruct1.json"));
+		StructureLoader.findStructureFiles();
+		structure = structureLoader.loadNextStructureFile();
 		prepWorldForStructure(structure);
 		
-		timer = new Timer(20, this);
-		timer.setInitialDelay(500);
+		timer = new Timer(FRAME_LENGTH, this);
+		timer.setInitialDelay(SEC / 2);
 		timer.start();
 	}
 
@@ -127,11 +135,20 @@ public class AppPanel extends JPanel implements ActionListener {
 			// if the current brick has landed, drop the next one.
 			if (world.getCurrentlyFallingBrick() == null && structure != null) {
 				if (structure.hasNextBrick()) {
+					// get the next brick in the structure
 					BrickInstance nextBrick = structure.popRandomBrickToDrop();
 					nextBrick.getLocation().z = world.getDimension().z - nextBrick.getSize().z;
 					world.setNextBrick(nextBrick);
 				} else {
-					// TODO load another structure.
+					if (doneCountdown > 0) {
+						// wait a bit before loading the next structure file.
+						doneCountdown--;
+					} else {
+						// done waiting, load another structure file.
+						structure = structureLoader.loadNextStructureFile();
+						prepWorldForStructure(structure);
+						doneCountdown = COUNTDOWN_LENGTH;
+					}
 				}
 			}
 			
