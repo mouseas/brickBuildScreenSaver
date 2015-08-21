@@ -20,10 +20,38 @@
 			"type" : "RectangleBrick",
 			"color" : "C4",
 			"size" : [2, 2, 3]
+		}, {
+			"type" : "FlatBrick",
+			"color" : "C1",
+			"size" : [32, 32, 1]
+		}, {
+			"type" : "FlatBrick",
+			"color" : "C7",
+			"size" : [22, 22, 2]
+		}, {
+			"type" : "FlatBrick",
+			"color" : "C7",
+			"size" : [20, 20, 2]
+		}, {
+			"type" : "FlatBrick",
+			"color" : "C1",
+			"size" : [18, 18, 1]
 		}
 	],
 	"instances" : [
 		{
+			"prototype" : 5,
+			"loc" : [-8, -8, -6]
+		}, {
+			"prototype" : 6,
+			"loc" : [-3, -3, -5]
+		}, {
+			"prototype" : 7,
+			"loc" : [-2, -2, -3]
+		}, {
+			"prototype" : 8,
+			"loc" : [-1, -1, -1]
+		}, {
 			"prototype" : 0,
 			"loc" : [0, 0, 0]
 		}, {
